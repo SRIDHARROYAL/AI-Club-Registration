@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Club Registration - RGMCET</title>
 
+    <!-- ✅ Correct Firebase SDK Links -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -68,8 +72,8 @@
             font-size: 18px;
             box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
             z-index: 1000;
-            text-align: center;
             max-width: 90%;
+            text-align: center;
         }
 
         /* ✅ Mobile responsive popup */
@@ -109,13 +113,9 @@
     <!-- ✅ Popup Message -->
     <div class="popup" id="popup">🎉 Successfully Submitted!</div>
 
-    <!-- ✅ Firebase SDK - Modular v9+ Syntax -->
-    <script type="module">
-        // ✅ Import Firebase Modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-        // ✅ Firebase Configuration
+    <!-- ✅ Firebase Setup - Fix for v9+ Syntax -->
+    <script>
+        // ✅ Correct Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyD4H1OIsIjnyH2KaUHTYyePg62ckl7FjyI",
             authDomain: "ai-club-vote.firebaseapp.com",
@@ -126,10 +126,10 @@
         };
 
         // ✅ Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // ✅ Handle Form Submission
+        // ✅ Ensure Firestore is Ready
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("registrationForm").addEventListener("submit", async function (event) {
                 event.preventDefault(); // Prevent page reload
@@ -142,7 +142,7 @@
                 console.log("🚀 Submitting form...");
 
                 try {
-                    await addDoc(collection(db, "ai_club_members"), {
+                    await db.collection("ai_club_members").add({
                         name: name,
                         email: email,
                         group: group,
