@@ -57,22 +57,31 @@
         .btn:hover {
             background: linear-gradient(135deg, #ff5e62, #ff9966);
         }
-        .success {
-            background: #28a745 !important;
-        }
+        
+        /* Popup Notification */
         .popup {
             display: none;
             position: fixed;
             left: 50%;
-            top: 20%;
-            transform: translate(-50%, 0);
+            top: 50%;
+            transform: translate(-50%, -50%);
             background: #4CAF50;
             color: white;
             padding: 20px;
             border-radius: 10px;
             font-size: 18px;
             box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            z-index: 1000;
         }
+
+        /* Mobile responsive popup */
+        @media (max-width: 768px) {
+            .popup {
+                width: 80%;
+                font-size: 16px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -97,14 +106,13 @@
             <br>
             <button type="submit" class="btn" id="submitBtn">Join AI Club</button>
         </form>
-
     </div>
 
-    <!-- Popup Message -->
+    <!-- ✅ Popup Message -->
     <div class="popup" id="popup">🎉 Successfully Submitted!</div>
 
     <script>
-        // Firebase Configuration
+        // ✅ Initialize Firebase Correctly
         const firebaseConfig = {
             apiKey: "AIzaSyD4H1OIsIjnyH2KaUHTYyePg62ckl7FjyI",
             authDomain: "ai-club-vote.firebaseapp.com",
@@ -114,53 +122,47 @@
             appId: "1:709413020028:web:a30caf7046ac6b18f144f9"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Form Submission Handler
-        document.getElementById("registrationForm").addEventListener("submit", async function (event) {
-            event.preventDefault(); // Prevent page reload
+        // ✅ Ensure Firestore is Ready
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("registrationForm").addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent page reload
 
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const group = document.getElementById("group").value;
-            const submitBtn = document.getElementById("submitBtn");
-            const popup = document.getElementById("popup");
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const group = document.getElementById("group").value;
+                const popup = document.getElementById("popup");
 
-            console.log("Submitting form...");
+                console.log("🚀 Submitting form...");
 
-            try {
-                await db.collection("ai_club_members").add({
-                    name: name,
-                    email: email,
-                    group: group,
-                    timestamp: new Date()
-                });
+                try {
+                    await db.collection("ai_club_members").add({
+                        name: name,
+                        email: email,
+                        group: group,
+                        timestamp: new Date()
+                    });
 
-                console.log("✔ Data successfully submitted to Firestore");
+                    console.log("✔ Data successfully submitted to Firestore");
 
-                // Show popup
-                popup.style.display = "block";
+                    // ✅ Show Popup
+                    popup.style.display = "block";
 
-                // Change button color
-                submitBtn.classList.add("success");
-                submitBtn.textContent = "✅ Submitted!";
-                
-                // Hide popup after 3 seconds
-                setTimeout(() => {
-                    popup.style.display = "none";
-                    submitBtn.classList.remove("success");
-                    submitBtn.textContent = "Join AI Club";
-                }, 3000);
+                    // ✅ Hide popup after 3 seconds
+                    setTimeout(() => {
+                        popup.style.display = "none";
+                    }, 3000);
 
-                // Clear form
-                document.getElementById("registrationForm").reset();
+                    // ✅ Clear form fields
+                    document.getElementById("registrationForm").reset();
 
-            } catch (error) {
-                console.error("❌ Error submitting data: ", error);
-                alert("❌ Submission failed. Check console for errors.");
-            }
+                } catch (error) {
+                    console.error("❌ Error submitting data: ", error);
+                    alert("❌ Submission failed. Check console for errors.");
+                }
+            });
         });
     </script>
 
