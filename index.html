@@ -6,67 +6,10 @@
     <title>AI Club Registration - RGMCET</title>
     
     <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-        // 🔹 Replace with YOUR Firebase Project Configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase & Firestore
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Function to handle form submission
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("registrationForm").addEventListener("submit", async function(event) {
-                event.preventDefault(); // Prevent page reload
-                
-                let name = document.getElementById("name").value;
-                let email = document.getElementById("email").value;
-                let group = document.getElementById("group").value;
-
-                try {
-                    await addDoc(collection(db, "ai_club_members"), {
-                        name: name,
-                        email: email,
-                        group: group,
-                        timestamp: serverTimestamp()
-                    });
-
-                    // ✅ Show success popup using SweetAlert
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success!",
-                        text: "Your registration was successful!",
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "OK"
-                    });
-
-                    // Reset the form
-                    document.getElementById("registrationForm").reset();
-                } catch (error) {
-                    console.error("❌ Error: ", error);
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error!",
-                        text: "Something went wrong. Try again!",
-                        confirmButtonColor: "#d33",
-                        confirmButtonText: "Close"
-                    });
-                }
-            });
-        });
-    </script>
-
-    <!-- SweetAlert Library (For Beautiful Popups) -->
+    <!-- SweetAlert (For Beautiful Success Popup) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Google Fonts -->
@@ -167,5 +110,62 @@
             <button type="submit" class="btn">Join AI Club</button>
         </form>
     </div>
+
+    <script>
+        // 🔹 Replace with YOUR Firebase Configuration (Get from Firebase Console)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Handle Form Submission
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let group = document.getElementById("group").value;
+
+            // Save to Firestore
+            db.collection("ai_club_members").add({
+                name: name,
+                email: email,
+                group: group,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                // ✅ Show Success Popup
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Your registration was successful!",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "OK"
+                });
+
+                // Reset Form
+                document.getElementById("registrationForm").reset();
+            })
+            .catch((error) => {
+                // ❌ Show Error Popup
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "Something went wrong. Please try again.",
+                    confirmButtonColor: "#d33",
+                    confirmButtonText: "Close"
+                });
+                console.error("Error adding document: ", error);
+            });
+        });
+    </script>
 </body>
 </html>
