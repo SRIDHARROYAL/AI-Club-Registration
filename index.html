@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Club Registration - RGMCET</title>
 
-    <!-- ✅ Correct Firebase SDK for Global Use -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <!-- ✅ Load Firebase v9+ in Compatibility Mode -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
@@ -113,7 +113,7 @@
     <div class="popup" id="popup">🎉 Successfully Submitted!</div>
 
     <script>
-        // ✅ Firebase Configuration (Global Namespace)
+        // ✅ Firebase Configuration (Compatibility Mode)
         const firebaseConfig = {
             apiKey: "AIzaSyD4H1OIsIjnyH2KaUHTYyePg62ckl7FjyI",
             authDomain: "ai-club-vote.firebaseapp.com",
@@ -123,7 +123,7 @@
             appId: "1:709413020028:web:a30caf7046ac6b18f144f9"
         };
 
-        // ✅ Initialize Firebase (Using Global Firebase Object)
+        // ✅ Initialize Firebase (Using Compatibility Mode)
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
